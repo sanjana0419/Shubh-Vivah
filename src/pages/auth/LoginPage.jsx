@@ -6,20 +6,21 @@ import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import { Mail, Lock, CheckSquare, Square, Chrome as Google, Facebook } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { login } from '../../services/authService'; // Import login service
 
 const LoginPage = () => {
     const navigation = useNavigation();
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState(''); // Renamed from email to identifier
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState({});
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         let valid = true;
         let newErrors = {};
 
-        if (!email) {
-            newErrors.email = 'Mobile number or Email is required';
+        if (!identifier) {
+            newErrors.identifier = 'Mobile number or Email is required';
             valid = false;
         }
         if (!password) {
@@ -31,10 +32,28 @@ const LoginPage = () => {
 
         if (valid) {
             setIsLoading(true);
-            setTimeout(() => {
+            try {
+                // Determine if identifier is phone (digits only) or email
+                const isPhone = /^\d+$/.test(identifier);
+                const payload = {
+                    password,
+                    // Send as mobile if digits, otherwise email. Backend expects 'mobile' based on error "Email or mobile required"
+                    ...(isPhone ? { mobile: identifier } : { email: identifier })
+                };
+
+                // Call the actual login API
+                await login(payload);
+
+                // Navigate to Main/Home on success (assuming 'Main' is the route, adjusting if needed)
+                navigation.navigate('Home');
+            } catch (error) {
+                // Handle login error
+                console.error("Login failed", error);
+                // You might want to show an alert or set a specific error state here
+                alert('Login failed. Please check your credentials.');
+            } finally {
                 setIsLoading(false);
-                alert('Login functionality to be implemented');
-            }, 1500);
+            }
         }
     };
 
@@ -61,14 +80,14 @@ const LoginPage = () => {
 
                     <View style={styles.formSection}>
                         <Input
-                            placeholder="Email Address"
-                            value={email}
+                            placeholder="Email or Phone Number"
+                            value={identifier}
                             onChangeText={(text) => {
-                                setEmail(text);
-                                setErrors({ ...errors, email: undefined });
+                                setIdentifier(text);
+                                setErrors({ ...errors, identifier: undefined });
                             }}
                             icon={<Mail size={20} color={Colors.subtext} />}
-                            error={errors.email}
+                            error={errors.identifier}
                         />
 
                         <Input
