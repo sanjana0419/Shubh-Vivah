@@ -5,7 +5,7 @@ export const Colors = {
     vermillion: '#E34234', // Vermillion Red
     gold: '#D4AF37', // Gold
     offWhite: '#FFFDF5', // Off-white/Ivory
-    background: '#FFFDF5', // Updated to off-white
+    background: '#ffffe4', // Updated to off-white
     card: '#FFFFFF',
     text: '#212121',
     subtext: '#757575',
