@@ -73,7 +73,7 @@ const LandingPage = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffe4',
+        backgroundColor: Colors.background,
     },
     content: {
         flex: 1,
@@ -124,13 +124,13 @@ const styles = StyleSheet.create({
     mainTagline: {
         fontSize: 18, // Slightly refined
         fontWeight: 'bold',
-        color: '#C62828', // Material Red 800
+        color: Colors.primary, // Brand Kumkum Red
         textAlign: 'center',
     },
     subTagline: {
         fontSize: 16,
         fontWeight: '600',
-        color: '#C62828',
+        color: Colors.primary,
         textAlign: 'center',
         marginTop: 2,
     },

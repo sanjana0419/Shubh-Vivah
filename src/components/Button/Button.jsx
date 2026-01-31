@@ -1,29 +1,55 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import React, { useRef } from 'react';
+import { TouchableWithoutFeedback, Text, StyleSheet, ActivityIndicator, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from '../../utils/colors';
 
-const Button = ({ title, onPress, isLoading, disabled, style }) => {
+const Button = ({ title, onPress, isLoading, disabled, style, paddingVertical = 14 }) => {
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+
+    const handlePressIn = () => {
+        Animated.spring(scaleAnim, {
+            toValue: 0.96, // Subtle scale down
+            useNativeDriver: true,
+            speed: 50,
+            bounciness: 10,
+        }).start();
+    };
+
+    const handlePressOut = () => {
+        Animated.spring(scaleAnim, {
+            toValue: 1, // Back to normal
+            useNativeDriver: true,
+            speed: 50,
+            bounciness: 10,
+        }).start();
+    };
+
     return (
-        <TouchableOpacity
+        <TouchableWithoutFeedback
             onPress={onPress}
             disabled={disabled || isLoading}
-            activeOpacity={0.8}
-            style={[styles.container, style]}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
         >
-            <LinearGradient
-                colors={disabled ? [Colors.border, Colors.border] : Colors.primaryGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.gradient}
-            >
-                {isLoading ? (
-                    <ActivityIndicator color={Colors.white} />
-                ) : (
-                    <Text style={styles.text}>{title}</Text>
-                )}
-            </LinearGradient>
-        </TouchableOpacity>
+            <Animated.View style={[
+                styles.container,
+                style,
+                { transform: [{ scale: scaleAnim }] }
+            ]}>
+                <LinearGradient
+                    colors={disabled ? [Colors.border, Colors.border] : Colors.primaryGradient}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={[styles.gradient, { paddingVertical }]}
+                >
+                    {isLoading ? (
+                        <ActivityIndicator color={Colors.white} />
+                    ) : (
+                        <Text style={styles.text}>{title}</Text>
+                    )}
+                </LinearGradient>
+            </Animated.View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -32,12 +58,12 @@ const styles = StyleSheet.create({
         width: '100%',
         borderRadius: 25,
         overflow: 'hidden',
-        marginTop: 10,
-        elevation: 3,
+        marginTop: 5,
+        elevation: 5, // Increased elevation
         shadowColor: Colors.shadow,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 5,
     },
     gradient: {
         paddingVertical: 14,
@@ -47,7 +73,7 @@ const styles = StyleSheet.create({
     text: {
         color: Colors.white,
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'Outfit_700Bold', // Modern sans-serif
         letterSpacing: 0.5,
     },
 });

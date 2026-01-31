@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions, SafeAreaView, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Colors } from '../../utils/colors';
+import Button from '../../components/Button/Button';
 
 const { width, height } = Dimensions.get('window');
 
@@ -87,13 +88,11 @@ const LanguageSelectionPage = ({ navigation }) => {
                             resizeMode="contain"
                         />
 
-                        <TouchableOpacity
-                            style={styles.button}
+                        <Button
+                            title="Save & Continue"
                             onPress={handleContinue}
-                            activeOpacity={0.8}
-                        >
-                            <Text style={styles.buttonText}>Save & Continue</Text>
-                        </TouchableOpacity>
+                            style={styles.buttonContainer}
+                        />
                         <View style={styles.bottomBar} />
                     </View>
                 </ScrollView>
@@ -105,7 +104,7 @@ const LanguageSelectionPage = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffe4',
+        backgroundColor: Colors.background,
     },
     scrollContent: {
         flexGrow: 1, // Crucial: allows inner content to fill screen
@@ -114,13 +113,13 @@ const styles = StyleSheet.create({
         flex: 1, // Crucial: pushes footer down on large screens
         alignItems: 'center',
         paddingHorizontal: 24,
-        paddingTop: 20,
+        paddingTop: 0, // Further moved up
     },
     brandingContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: height * 0.02,
-        marginBottom: 10,
+        marginTop: 0, // Removed top margin
+        marginBottom: 0, // Removed bottom margin
     },
     logoWrapper: {
         zIndex: 2,
@@ -137,23 +136,23 @@ const styles = StyleSheet.create({
     },
     header: {
         alignItems: 'center',
-        marginBottom: 10, // Reduced
+        marginBottom: 5,
         width: '100%',
-        marginTop: -20,
+        marginTop: 5, // Moved text lower
     },
     title: {
         fontSize: 22,
-        fontWeight: 'bold',
-        color: '#000000',
-        marginBottom: 5, // Reduced
+        fontFamily: 'Outfit_700Bold', // Modern sans-serif bold
+        color: Colors.primary,
+        marginBottom: 5,
         textAlign: 'center',
     },
     subtitle: {
         fontSize: 14,
+        fontFamily: 'Outfit_400Regular', // Modern sans-serif
         color: '#757575',
-        fontWeight: '400',
         textAlign: 'center',
-        marginBottom: 10, // Reduced
+        marginBottom: 10,
     },
     listContainer: {
         width: '100%',
@@ -162,19 +161,19 @@ const styles = StyleSheet.create({
     languageCard: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 12, // Reduced from 15
+        paddingVertical: 20, // Increased space between languages
         borderBottomWidth: 1,
         borderBottomColor: '#E0E0E0',
     },
     languageLabel: {
         fontSize: 18,
-        fontWeight: '500',
-        color: '#333',
+        fontFamily: 'Outfit_500Medium', // Modern sans-serif medium
+        color: Colors.text,
         marginLeft: 15,
     },
     languageLabelSelected: {
-        color: '#000',
-        fontWeight: '600',
+        color: Colors.primary, // Kumkum Red
+        fontWeight: 'bold',
     },
     radioButton: {
         width: 20,
@@ -186,44 +185,36 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     radioButtonSelected: {
-        borderColor: Colors.primary,
+        borderColor: Colors.secondary,
     },
     radioInner: {
         width: 10,
         height: 10,
         borderRadius: 5,
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.secondary,
     },
     footer: {
         paddingHorizontal: 24,
-        paddingBottom: 24,
+        paddingBottom: 50, // Increased to move everything (button/divider) upwards from the bottom
         width: '100%',
         alignItems: 'center',
-        marginTop: 'auto', // Pushes to bottom if flex exists
+        marginTop: 'auto',
     },
     dividerImage: {
         width: '100%',
-        height: 150, // Increased size
-        marginTop: -60, // Moved more upwards
-        marginBottom: 5,
+        height: 150,
+        marginTop: -20, // Moved lower (less overlap with the language list)
+        marginBottom: -15, // Sit closer to the Save & Continue button
     },
-    button: {
+    buttonContainer: {
         width: '100%',
-        backgroundColor: Colors.primary,
-        paddingVertical: 16,
         borderRadius: 30,
-        alignItems: 'center',
+        marginTop: 0, // Managed by divider's marginBottom
+        elevation: 8,
         shadowColor: Colors.primary,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 6,
-    },
-    buttonText: {
-        color: '#FFFFFF',
-        fontSize: 18,
-        fontWeight: 'bold',
-        letterSpacing: 0.5,
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.4,
+        shadowRadius: 10,
     },
     bottomBar: {
         width: 40,

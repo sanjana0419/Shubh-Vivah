@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Colors } from '../../utils/colors';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import { Mail, Lock, CheckCircle2 } from 'lucide-react-native';
+import { Mail, Lock, CheckCircle2, Check } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getPasswordError } from '../../utils/validators';
 
@@ -99,25 +99,19 @@ const RegisterPage = () => {
         </View>
     );
 
-    const renderDivider = () => (
-        <View style={styles.dividerBox}>
-            <View style={styles.goldenLine} />
-            <View style={styles.ornamentGroup}>
-                <View style={styles.smallDot} />
-                <View style={styles.goldDiamond} />
-                <View style={styles.smallDot} />
-            </View>
-            <View style={styles.goldenLine} />
-        </View>
-    );
+
 
     return (
         <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 style={styles.keyboardView}
             >
-                <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+                <ScrollView
+                    contentContainerStyle={styles.scrollContent}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                >
                     <View style={styles.mainContent}>
                         {renderHeader()}
 
@@ -176,7 +170,7 @@ const RegisterPage = () => {
                                         style={styles.actionBtn}
                                     />
                                     <TouchableOpacity style={styles.backLink}>
-                                        <Text style={styles.backLinkText}>Recend Code</Text>
+                                        <Text style={styles.backLinkText}>Resend Code</Text>
                                     </TouchableOpacity>
                                 </>
                             )}
@@ -185,17 +179,17 @@ const RegisterPage = () => {
                                 <>
                                     <View style={styles.successIconContainer}>
                                         <View style={styles.circleCheck}>
-                                            <CheckCircle2 size={60} color="#FFF" />
+                                            <Check size={40} color="#FFF" strokeWidth={3} />
                                         </View>
                                     </View>
                                     <View style={styles.textCenter}>
-                                        <Text style={styles.title}>OTP Verified Successfully</Text>
+                                        <Text style={[styles.title, styles.boldTitle]}>OTP Verified Successfully</Text>
                                         <Text style={styles.subtitle}>You can now set your account password</Text>
                                     </View>
                                     <Button
                                         title="Continue"
                                         onPress={() => setStep('register_password')}
-                                        style={styles.actionBtn}
+                                        style={[styles.actionBtn, { width: '50%' }]}
                                     />
                                 </>
                             )}
@@ -243,17 +237,17 @@ const RegisterPage = () => {
                                 <>
                                     <View style={styles.successIconContainer}>
                                         <View style={styles.circleCheck}>
-                                            <CheckCircle2 size={60} color="#FFF" />
+                                            <Check size={40} color="#FFF" strokeWidth={3} />
                                         </View>
                                     </View>
                                     <View style={styles.textCenter}>
-                                        <Text style={styles.title}>Account created successfully</Text>
+                                        <Text style={[styles.title, styles.boldTitle]}>Account created successfully</Text>
                                         <Text style={styles.subtitle}>Log in now with your new password</Text>
                                     </View>
                                     <Button
                                         title="Back to login"
                                         onPress={() => navigation.navigate('Login')}
-                                        style={styles.actionBtn}
+                                        style={[styles.actionBtn, { width: '50%' }]}
                                     />
                                 </>
                             )}
@@ -275,19 +269,20 @@ const RegisterPage = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#ffffe4' },
+    container: { flex: 1, backgroundColor: Colors.background },
     keyboardView: { flex: 1 },
-    scrollContent: { flexGrow: 1, paddingHorizontal: 30, paddingTop: 20, paddingBottom: 20 },
+    scrollContent: { flexGrow: 1, paddingHorizontal: 30, paddingTop: 10, paddingBottom: 25 },
     mainContent: { flex: 1 },
-    logoSection: { alignItems: 'center', marginBottom: 20 },
-    logo: { width: width * 0.9, height: 250 },
-    haldiKumkum: { width: 230, height: 110, marginTop: -60, zIndex: 10 },
-    formSection: { width: '100%', alignItems: 'center', marginTop: -15 },
+    logoSection: { alignItems: 'center', marginBottom: 5 },
+    logo: { width: width * 0.85, height: 180 },
+    haldiKumkum: { width: 240, height: 100, marginTop: -50, zIndex: 10 },
+    formSection: { width: '100%', alignItems: 'center', marginTop: 10 },
     textCenter: { alignItems: 'center', marginBottom: 25 },
-    title: { fontSize: 24, fontWeight: '800', color: '#1A1A1A', marginBottom: 8, textAlign: 'center' },
+    boldTitle: { fontWeight: '700' },
+    title: { fontSize: 24, fontWeight: '400', color: Colors.text, marginBottom: 8, textAlign: 'center' },
     subtitle: { fontSize: 14, color: '#757575', textAlign: 'center', lineHeight: 20 },
-    actionBtn: { width: '100%', marginBottom: 20, borderRadius: 30, backgroundColor: Colors.primary },
-    backLink: { paddingVertical: 10 },
+    actionBtn: { width: '65%', alignSelf: 'center', marginBottom: 20, borderRadius: 30, backgroundColor: Colors.primary },
+    backLink: { paddingVertical: 10, width: '100%', alignItems: 'center' },
     backLinkText: { color: '#757575', fontSize: 14, fontWeight: '500' },
     otpContainer: { flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginVertical: 30 },
     otpInput: {
@@ -303,9 +298,9 @@ const styles = StyleSheet.create({
     },
     successIconContainer: { marginBottom: 25, alignItems: 'center' },
     circleCheck: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 75,
+        height: 75,
+        borderRadius: 37.5,
         backgroundColor: Colors.primary,
         alignItems: 'center',
         justifyContent: 'center',
@@ -315,9 +310,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 6,
     },
-    dividerImage: { width: '100%', height: 150, alignSelf: 'center', marginTop: -40 },
-    bottomSection: { width: '100%', alignItems: 'center', paddingBottom: 10 },
-    footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 10 },
+    dividerImage: { width: '100%', height: 180, alignSelf: 'center', marginTop: -100, marginBottom: 10 },
+    bottomSection: { width: '100%', alignItems: 'center', paddingBottom: 15 },
+    footer: { flexDirection: 'row', justifyContent: 'center', marginTop: 5 },
     footerText: { fontSize: 14, color: '#757575' },
     loginText: { fontSize: 14, color: Colors.primary, fontWeight: '800' },
 });
